@@ -10,16 +10,16 @@ def join_chess_game(gid, uid: uuid.UUID):
     game = session.query(Game).where(Game.id == gid).first()
     if game is not None:
         if game.white_player is None:
-            setattr(game, 'white_player', uid)
+            session.query(Game).filter(Game.id == gid).update({"white_player": uid})
             session.commit()
             session.close()
-            return game.id
+            return gid
         elif game.black_player is None:
             #game.black_player = uid
-            setattr(game, 'black_player', uid)
+            session.query(Game).filter(Game.id == gid).update( {"black_player": uid})
             session.commit()
             session.close()
-            return game.id
+            return gid
     session.close()
     return -1
 

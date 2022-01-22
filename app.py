@@ -5,15 +5,19 @@ from flask import request
 from Controler.CreateGame import create_game
 from Controler.CreateUser import addUser
 from Controler.JoinGame import join_chess_game
+from Controler.UpdateGame import update_game
 app = Flask(__name__)
 
 #GET
-@app.route('/game', methods=['GET'])
-def get_game():  # put application's code here
-    ida = request.args.get("id")
-    json = request.get_json()
-
-    return jsonify(fen='rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1 +' + ida + " + " + json["id"])
+@app.route('/game', methods=['PUT'])
+def upd_game():  # put application's code here
+    req_data = request.get_json()
+    gid = request.args.get('id')
+    uid = req_data['user_id']
+    move = req_data['move']
+    timeleft = req_data['time_left']
+    fen = update_game(gid, uid, move, timeleft)
+    return jsonify(fen=fen)
 
 
 @app.route('/scoreboard', methods=['GET'])
@@ -30,7 +34,6 @@ def post_game():  # put application's code here
 
 @app.route('/register', methods=['POST'])
 def register():  # put application's code here
-
     req_data = request.get_json()
     name = req_data["name"]
     email = req_data["email"]

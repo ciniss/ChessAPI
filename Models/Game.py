@@ -7,8 +7,8 @@ import uuid
 class Game(Base):
     __tablename__ = "games"
     id = Column(INTEGER, primary_key=True)
-    white_player = Column(UUID, ForeignKey('user.id'))
-    black_player = Column(UUID, ForeignKey('user.id'))
+    white_player = Column(UUID(as_uuid=True), ForeignKey('user.id'))
+    black_player = Column(UUID(as_uuid=True), ForeignKey('user.id'))
     white_player_time_left = Column(INTEGER)
     black_player_time_left = Column(INTEGER)
     FEN = Column(String)
