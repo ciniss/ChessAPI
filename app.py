@@ -16,8 +16,7 @@ def upd_game():  # put application's code here
     uid = req_data['user_id']
     move = req_data['move']
     timeleft = req_data['time_left']
-    fen = update_game(gid, uid, move, timeleft)
-    return jsonify(fen=fen)
+    return update_game(gid, uid, move, timeleft)
 
 
 @app.route('/scoreboard', methods=['GET'])
