@@ -6,6 +6,7 @@ from Controler.CreateGame import create_game
 from Controler.CreateUser import addUser
 from Controler.JoinGame import join_chess_game
 from Controler.UpdateGame import update_game
+from Controler.Login import log_in
 app = Flask(__name__)
 
 #GET
@@ -22,6 +23,13 @@ def upd_game():  # put application's code here
 @app.route('/scoreboard', methods=['GET'])
 def get_scoreboard():  # put application's code here
     return jsonify()
+
+@app.route("/login",methods=["GET"])
+def login():
+    req_data = request.get_json()
+    nick = req_data['username']
+    pswd = req_data['password']
+    return log_in(nick, pswd)
 
 
 
