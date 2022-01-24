@@ -11,8 +11,8 @@ class User(Base):
     password = Column(String, nullable=False)
     mmr = Column(INTEGER)
 
-    def __init__(self, id, nick, email, password, mmr):
-        self.id = id
+    def __init__(self, u_id, nick, email, password, mmr):
+        self.id = u_id
         self.nick = nick
         self.email = email
         self.password = password

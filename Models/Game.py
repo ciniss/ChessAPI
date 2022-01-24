@@ -23,4 +23,4 @@ class Game(Base):
         self.black_player_time_left = 600
         self.FEN = chess.STARTING_FEN
         self.player_to_play = "w"
-        self.game_state = "play"
+        self.game_state = "playing"
