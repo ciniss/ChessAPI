@@ -1,5 +1,6 @@
-from base import Session
+from base import Session, engine
 from Models.Game import Game
+from Models.User import User
 import chess
 from flask import jsonify
 import uuid
@@ -35,10 +36,14 @@ def update_game(gid, uid, move, time):
             is_checkmate = board.is_checkmate()
             is_stealmate = board.is_stalemate()
             game_status = ""
-            if is_checkmate and player=="w":
+            if is_checkmate and player == "w":
                 game_status += "white_win"
+                session.query(User).filter(User.id == game.black_player).update({User.mmr: User.mmr - 15})
+                session.query(User).filter(User.id == game.white_player).update({User.mmr: User.mmr + 15})
             elif is_checkmate and player=="b":
                 game_status += "black_win"
+                session.query(User).filter(User.id == game.black_player).update({User.mmr: User.mmr + 15})
+                session.query(User).filter(User.id == game.white_player).update({User.mmr: User.mmr - 15})
             elif is_stealmate:
                 game_status += "draw"
             else:

@@ -1,6 +1,7 @@
 from flask import Flask
 from flask import jsonify
 from flask import request
+from flask import abort
 
 from Controler.CreateGame import create_game
 from Controler.CreateUser import addUser
@@ -21,6 +22,8 @@ def login():
     req_data = request.get_json(force=True)
     nick = req_data['username']
     pswd = req_data['password']
+    if nick is None or pswd is None:
+        abort(404, "Missing data")
     return log_in(nick, pswd)
 @app.route("/game", methods=['GET'])
 def get_game():
