@@ -1,3 +1,5 @@
+import datetime
+
 from Models.Game import Game
 from Models.User import User
 import uuid
@@ -23,14 +25,15 @@ def join_chess_game(gid: int, uid: uuid.UUID):
                 color = "b"
                 session.commit()
                 session.close()
+        #Podczas dołączenia drugiego gracza, gra przechodzi w stan aktywny
         else:
             if game.white_player is None and game.black_player != uid:
-                session.query(Game).filter(Game.id == gid).update({"white_player": uid})
+                session.query(Game).filter(Game.id == gid).update({"white_player": uid, "game_state": "playing", "white_last_move": datetime.datetime.now()})
                 color = "w"
                 session.commit()
                 session.close()
             elif game.black_player is None and game.white_player != uid:
-                session.query(Game).filter(Game.id == gid).update({"black_player": uid})
+                session.query(Game).filter(Game.id == gid).update({"black_player": uid, "game_state": "playing", "black_last_move": datetime.datetime.now()})
                 color = "b"
                 session.commit()
                 session.close()

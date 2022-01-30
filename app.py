@@ -47,8 +47,6 @@ def start_game():
     g_id = create_game()
     return jsonify(game_id=str(g_id))
 
-
-
 #PUT
 @app.route('/join_game', methods=['PUT'])
 def join_game():
