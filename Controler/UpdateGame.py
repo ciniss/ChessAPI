@@ -13,11 +13,12 @@ def update_game(gid, uid, move, time):
         return jsonify(status="err_no_game", fen="")
     if uid != str(game.white_player) and uid != str(game.black_player):
         return jsonify(status="err_player_auth", fen="")
-    if game.game_state!="playing":
+    if game.game_state != "playing":
         return jsonify(status="game_finished", fen="")
     prev_FEN = game.FEN
     board = chess.Board(prev_FEN)
     player = 'n'
+    #Getting player from fen
     for i in range(len(prev_FEN)):
         if prev_FEN[i] == ' ':
             player = prev_FEN[i+1]
@@ -28,13 +29,13 @@ def update_game(gid, uid, move, time):
             board.push(move)
 
             if player == "w":
-                if (datetime.datetime.now() - game.white_last_move).seconds > 30:
-                    session.query(Game).filter(Game.id == gid).update({Game.game_state: "white_win"})
-                    return jsonify(fen=game.FEN, status="good", game_status="white_win")
-            else:
                 if (datetime.datetime.now() - game.black_last_move).seconds > 30:
                     session.query(Game).filter(Game.id == gid).update({Game.game_state: "black_win"})
                     return jsonify(fen=game.FEN, status="good", game_status="black_win")
+            else:
+                if (datetime.datetime.now() - game.white_last_move).seconds > 30:
+                    session.query(Game).filter(Game.id == gid).update({Game.game_state: "white_win"})
+                    return jsonify(fen=game.FEN, status="good", game_status="white_win")
             if player == 'w':
                 session.query(Game).filter(Game.id == gid).update({
                     "white_last_move":  datetime.datetime.now(),

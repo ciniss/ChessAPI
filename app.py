@@ -9,15 +9,19 @@ from Controler.JoinGame import join_chess_game
 from Controler.UpdateGame import update_game
 from Controler.GetGame import get_game_data
 from Controler.Login import log_in
+from Controler.Scoreboard import scoreboard
+
 app = Flask(__name__)
 
-#GET
+
+# GET
 
 @app.route('/scoreboard', methods=['GET'])
 def get_scoreboard():  # put application's code here
-    return jsonify()
+    return scoreboard()
 
-@app.route("/login",methods=["GET"])
+
+@app.route("/login", methods=["GET"])
 def login():
     req_data = request.get_json(force=True)
     nick = req_data['username']
@@ -25,6 +29,8 @@ def login():
     if nick is None or pswd is None:
         abort(404, "Missing data")
     return log_in(nick, pswd)
+
+
 @app.route("/game", methods=['GET'])
 def get_game():
     req_data = request.get_json(force=True)
@@ -32,7 +38,8 @@ def get_game():
     uid = req_data['user_id']
     return get_game_data(gid, uid)
 
-#POST
+
+# POST
 @app.route('/register', methods=['POST'])
 def register():  # put application's code here
     req_data = request.get_json()
@@ -42,12 +49,14 @@ def register():  # put application's code here
     u_id = addUser(name, email, password)
     return jsonify(uid=u_id)
 
-@app.route('/create_game', methods = ['POST'])
+
+@app.route('/create_game', methods=['POST'])
 def start_game():
     g_id = create_game()
     return jsonify(game_id=str(g_id))
 
-#PUT
+
+# PUT
 @app.route('/join_game', methods=['PUT'])
 def join_game():
     req_data = request.get_json()
@@ -58,6 +67,7 @@ def join_game():
     if r_id == g_id:
         return jsonify(game_id=g_id, status='ok', color=color)
     return jsonify(status="no such aviable game")
+
 
 @app.route('/game', methods=['PUT'])
 def upd_game():  # put application's code here

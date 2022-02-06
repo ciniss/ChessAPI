@@ -1,6 +1,6 @@
 import datetime
 
-from sqlalchemy import Column, INTEGER, String, ForeignKey, DATETIME
+from sqlalchemy import Column, INTEGER, String, ForeignKey, TIMESTAMP
 from sqlalchemy.dialects.postgresql import UUID
 from base import Base
 
@@ -11,8 +11,8 @@ class Game(Base):
     id = Column(INTEGER, primary_key=True)
     white_player = Column(UUID(as_uuid=True), ForeignKey('user.id'))
     black_player = Column(UUID(as_uuid=True), ForeignKey('user.id'))
-    white_last_move = Column(DATETIME)
-    black_last_move = Column(DATETIME)
+    white_last_move = Column(TIMESTAMP)
+    black_last_move = Column(TIMESTAMP)
     FEN = Column(String)
     player_to_play = Column(String)
     game_state = Column(String)
